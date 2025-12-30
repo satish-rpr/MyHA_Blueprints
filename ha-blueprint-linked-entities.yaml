@@ -94,6 +94,10 @@ trigger:
     id: set_color_temp
     entity_id: !input linked_entity
     attribute: color_temp
+  - platform: state
+    id: set_color
+    entity_id: !input linked_entity
+    attribute: rgb
 
 condition:
   - condition: template
