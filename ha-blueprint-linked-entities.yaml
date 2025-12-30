@@ -53,7 +53,7 @@ trigger:
   - platform: state
     id: set_color
     entity_id: !input linked_entity
-    attribute: rgb
+    attribute: rgb_color
 
 condition:
   - condition: template
