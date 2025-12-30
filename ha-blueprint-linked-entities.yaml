@@ -159,3 +159,15 @@ action:
               color_temp: "{{ set_light_color_temp }}"
           - delay:
               milliseconds: !input delay_miliseconds
+      - conditions:
+          - condition: trigger
+            id: set_color
+        sequence:
+          - variables:
+              set_light_color: "{{ trigger.to_state.attributes.rgb_color }}"
+          - service: light.turn_on
+            data:
+              entity_id: "{{linked_entities | reject('eq', trigger.entity_id) | list }}"
+              rgb_color: "{{ set_light_color }}"
+          - delay:
+              milliseconds: !input delay_miliseconds
