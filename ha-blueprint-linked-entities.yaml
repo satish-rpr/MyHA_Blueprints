@@ -170,4 +170,4 @@ action:
               entity_id: "{{linked_entities | reject('eq', trigger.entity_id) | list }}"
               rgb_color: "{{ set_light_color }}"
           - delay:
-              milliseconds: !input delay_miliseconds
+              milliseconds: 0
