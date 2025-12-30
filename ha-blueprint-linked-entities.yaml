@@ -54,16 +54,16 @@ blueprint:
       selector:
         entity:
           multiple: true
-    # delay_miliseconds:
-    #   name: Delay
-    #   description: How long to delay changes to linked entities
-    #   selector:
-    #     number:
-    #       min: 0
-    #       max: 1000
-    #       unit_of_measurement: miliseconds
-    #       mode: box
-    #   default: 200
+    delay_miliseconds:
+      name: Delay
+      description: How long to delay changes to linked entities
+      selector:
+        number:
+          min: 0
+          max: 1000
+          unit_of_measurement: miliseconds
+          mode: box
+      default: 10
 
 mode: single
 max_exceeded: silent
