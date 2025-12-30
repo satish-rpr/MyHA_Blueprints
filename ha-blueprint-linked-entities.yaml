@@ -21,7 +21,7 @@ blueprint:
           mode: box
       default: 10
 
-mode: single
+mode: parallel
 max_exceeded: silent
 
 variables:
