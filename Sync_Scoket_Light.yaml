@@ -1,0 +1,65 @@
+blueprint:
+  name: Sync Socket Lighht
+  description: "My blueprint"
+
+  domain: automation
+  input:
+    linked_entity:
+      name: Linked Entities
+      description: Entities whose state and attributes will be linked (if any of them transitions to ON state, all will be ON. Same for the OFF, BRIGHTNESS).
+      selector:
+        entity:
+          multiple: true
+    delay_miliseconds:
+      name: Delay
+      description: How long to delay changes to linked entities
+      selector:
+        number:
+          min: 0
+          max: 1000
+          unit_of_measurement: miliseconds
+          mode: box
+      default: 0
+
+mode: parallel
+max_exceeded: silent
+
+variables:
+  linked_entities: !input linked_entity
+
+trigger:
+  - platform: state
+    id: turn_on
+    entity_id: !input linked_entity
+    from: "off"
+    to: "on"
+  - platform: state
+    id: turn_off
+    entity_id: !input linked_entity
+    from: "on"
+    to: "off"
+
+condition:
+  - condition: template
+    value_template: "{{ trigger.to_state.context.id != this.context.id }}"
+
+action:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: turn_on
+        sequence:
+          - service: "homeassistant.turn_on"
+            target:
+              entity_id: "{{linked_entities | reject('eq', trigger.entity_id) | list }}"
+          - delay:
+              milliseconds: !input delay_miliseconds
+      - conditions:
+          - condition: trigger
+            id: turn_off
+        sequence:
+          - service: "homeassistant.turn_off"
+            target:
+              entity_id: "{{linked_entities | reject('eq', trigger.entity_id) | list }}"
+          - delay:
+              milliseconds: !input delay_miliseconds
